@@ -187,7 +187,9 @@ function formatCategory(cat) {
 function buildWhatsappUrl(phone, message) {
   const base = 'https://wa.me/';
   const p = String(phone ?? '').replace(/\D/g, '');
-  const text = message ? `?text=${encodeURIComponent(message)}` : '';
+  const portalUrl = window.location.href;
+  const finalMessage = message ? `${message}\n\n${portalUrl}` : portalUrl;
+  const text = finalMessage ? `?text=${encodeURIComponent(finalMessage)}` : '';
   return `${base}${p}${text}`;
 }
 

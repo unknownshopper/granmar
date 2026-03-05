@@ -168,10 +168,22 @@ a { color: inherit; }
 }
 
 .brand__logo {
-  height: 34px;
+  height: clamp(28px, 5vw, 38px);
   width: auto;
+  max-width: 160px;
+  object-fit: contain;
   border-radius: 10px;
   box-shadow: 0 10px 25px rgba(2, 28, 48, 0.12);
+}
+
+@media (max-width: 620px) {
+  .brand {
+    width: 100%;
+  }
+
+  .brand__logo {
+    max-width: 220px;
+  }
 }
 
 .nav {
