@@ -1,0 +1,163 @@
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0b1f2a" />
+    <title>Gran Mar | Guía del Huésped</title>
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container">
+        <div class="brand">
+          <img class="brand__logo" src="./img/logo.png" alt="Gran Mar" />
+          <div class="brand__text">
+            <div class="brand__title">Guía del huésped</div>
+            <div class="brand__subtitle">Playa Miramar, Centla, Tabasco</div>
+          </div>
+        </div>
+        <nav class="nav">
+          <a href="#wifi">Wi-Fi</a>
+          <a href="#lugares">Lugares</a>
+          <a href="#emergencia">Emergencia</a>
+          <a href="#info">Info</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="hero" aria-label="Bienvenida">
+        <h1>Bienvenido a Gran Mar</h1>
+        <div id="roomBadge" class="badge" hidden></div>
+        <p>
+          Si estás leyendo esto, estás en el WiFi del complejo o abriste el portal desde NFC.
+          Aquí tienes lo esencial para tu estancia.
+        </p>
+        <div class="grid grid--2">
+          <a class="card card--cta" href="#wifi">
+            <div class="card__title">Conectarme al Wi-Fi</div>
+            <div class="card__text">Copiar nombre y contraseña.</div>
+          </a>
+          <a class="card card--cta" href="#lugares">
+            <div class="card__title">Mapa de lugares cercanos</div>
+            <div class="card__text">Tortas, tienda, depósito, doctores y más.</div>
+          </a>
+        </div>
+      </section>
+
+      <section id="wifi" class="section" aria-label="Wi-Fi">
+        <h2>Wi-Fi</h2>
+        <div class="card">
+          <div>
+            <div class="kv">
+              <div class="kv__k">Red (SSID)</div>
+              <div class="kv__v" id="wifiSsid">GRANMAR_WIFI</div>
+            </div>
+            <div class="kv">
+              <div class="kv__k">Contraseña</div>
+              <div class="kv__v" id="wifiPass">CAMBIAR_ESTA_CLAVE</div>
+            </div>
+            <div class="actions">
+              <button class="btn" id="copyWifiBtn" type="button">Copiar datos Wi‑Fi</button>
+              <button class="btn btn--secondary" id="openWifiSettingsBtn" type="button">Abrir ajustes Wi‑Fi</button>
+            </div>
+            <div class="muted" id="wifiHint">
+              Copia y pega la contraseña en tu conexión Wi‑Fi.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="info" class="section" aria-label="Información">
+        <h2>Información</h2>
+        <div class="grid grid--2">
+          <div class="card">
+            <div class="card__title">Check‑in / Check‑out</div>
+            <div class="card__text">
+              <div class="kv">
+                <div class="kv__k">Check‑in</div>
+                <div class="kv__v">15:00</div>
+              </div>
+              <div class="kv">
+                <div class="kv__k">Check‑out</div>
+                <div class="kv__v">12:00</div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card__title">Reglas básicas</div>
+            <div class="card__text">
+              <div class="list">
+                <div class="list__item">Cuidar el equipo y apagar A/C al salir.</div>
+                <div class="list__item">No tirar toallas al piso con arena.</div>
+                <div class="list__item">Reporta cualquier falla por WhatsApp o llamada.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="lugares" class="section" aria-label="Lugares cercanos">
+        <div class="section__head">
+          <h2>Lugares cercanos</h2>
+          <div class="muted">Abre el mapa cuando tengas señal. Mientras tanto, guarda esta lista.</div>
+        </div>
+
+        <div class="controls">
+          <label class="control">
+            <span class="control__label">Buscar</span>
+            <input id="searchInput" type="search" placeholder="tortas, doctor, tienda…" autocomplete="off" />
+          </label>
+          <label class="control">
+            <span class="control__label">Categoría</span>
+            <select id="categorySelect">
+              <option value="">Todas</option>
+            </select>
+          </label>
+        </div>
+
+        <div id="placesList" class="grid grid--cards" aria-live="polite"></div>
+      </section>
+
+      <section id="emergencia" class="section" aria-label="Emergencia">
+        <h2>Emergencia</h2>
+        <div class="grid grid--2">
+          <div class="card">
+            <div class="card__title">Números</div>
+            <div class="card__text">
+              <div class="list">
+                <a class="list__item" href="tel:911">911 (Emergencias)</a>
+                <a class="list__item" href="tel:089">089 (Denuncia anónima)</a>
+              </div>
+            </div>
+            <div class="muted">Si no hay señal, intenta salir a un punto alto o cerca de carretera.</div>
+          </div>
+          <div class="card">
+            <div class="card__title">Ubicación</div>
+            <div class="card__text">
+              Comparte tu ubicación si necesitas ayuda. Si el mapa abre, puedes copiar la ubicación.
+            </div>
+            <button class="btn" id="shareLocationBtn" type="button">Compartir mi ubicación</button>
+            <div class="muted" id="shareLocationHint"></div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <div class="muted">
+          Consejo: agrega esta página a tu pantalla de inicio para abrirla sin internet.
+        </div>
+        <div class="muted footer__credits">
+          <a href="https://menutags.unknownshoppers.com" target="_blank" rel="noreferrer">MENUTAGS</a>
+          by
+          <a href="https://unknownshoppers.com" target="_blank" rel="noreferrer">The Unknown Shopper</a>
+        </div>
+      </footer>
+    </main>
+
+    <script src="./script.js"></script>
+  </body>
+</html>

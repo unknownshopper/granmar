@@ -1,0 +1,328 @@
+
+
+const CONFIG = {
+  wifi: {
+    ssid: 'GRANMAR_WIFI',
+    password: 'CAMBIAR_ESTA_CLAVE',
+    encryption: 'WPA',
+    hidden: false,
+  },
+  rooms: {
+    total: 16,
+    paramNames: ['hab', 'room'],
+  },
+};
+
+/**
+ * Datos OFFLINE: aquí pondrás coordenadas reales.
+ * Por ahora dejo ejemplos para que sustituyas.
+ */
+const PLACES = [
+  {
+    id: 'tortas-1',
+    name: 'Tortas (Ejemplo)',
+    category: 'comida',
+    note: 'Referencia: salida hacia la carretera',
+    hours: '9:00 a 20:00',
+    whatsapp: {
+      phone: '5219999999999',
+      message: 'Hola, estoy en Gran Mar. ¿Me compartes tu menú/ubicación y tiempos de entrega? Gracias.',
+    },
+    lat: 18.000001,
+    lon: -92.000001,
+  },
+  {
+    id: 'tiendita-1',
+    name: 'Tiendita (Ejemplo)',
+    category: 'tienda',
+    note: 'A 5-10 min',
+    hours: '9:00 a 20:00',
+    whatsapp: {
+      phone: '5219999999999',
+      message: 'Hola, estoy en Gran Mar. ¿Me confirmas si estás abierto y tu ubicación? Gracias.',
+    },
+    lat: 18.000002,
+    lon: -92.000002,
+  },
+  {
+    id: 'deposito-1',
+    name: 'Depósito de cerveza (Ejemplo)',
+    category: 'tienda',
+    note: 'Pregunta por “depósito”',
+    hours: '9:00 a 20:00',
+    whatsapp: {
+      phone: '5219999999999',
+      message: 'Hola, estoy en Gran Mar. ¿Tienes servicio a domicilio? Gracias.',
+    },
+    lat: 18.000003,
+    lon: -92.000003,
+  },
+  {
+    id: 'doctor-1',
+    name: 'Doctor / Clínica (Ejemplo)',
+    category: 'salud',
+    note: 'Horario variable',
+    lat: 18.000004,
+    lon: -92.000004,
+  },
+  {
+    id: 'emergencia-1',
+    name: 'Punto de auxilio (Ejemplo)',
+    category: 'emergencia',
+    note: 'Si no hay señal, intenta moverte a un punto alto',
+    lat: 18.000005,
+    lon: -92.000005,
+  },
+];
+
+function $(id) {
+  return document.getElementById(id);
+}
+
+function escapeHtml(s) {
+  return String(s)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
+function normalizeText(s) {
+  return String(s)
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '');
+}
+
+function getRoomFromUrl() {
+  const url = new URL(window.location.href);
+  for (const key of CONFIG.rooms.paramNames) {
+    const raw = url.searchParams.get(key);
+    if (raw && raw.trim()) return raw.trim();
+  }
+  return null;
+}
+
+function renderRoomBadge() {
+  const badge = $('roomBadge');
+  if (!badge) return;
+
+  const room = getRoomFromUrl();
+  if (!room) return;
+
+  badge.textContent = `Habitación ${room}`;
+  badge.hidden = false;
+}
+
+function setWifiUi() {
+  const ssidEl = $('wifiSsid');
+  const passEl = $('wifiPass');
+  if (ssidEl) ssidEl.textContent = CONFIG.wifi.ssid;
+  if (passEl) passEl.textContent = CONFIG.wifi.password;
+}
+
+async function copyWifiToClipboard() {
+  const hint = $('wifiHint');
+  const ssid = CONFIG.wifi.ssid;
+  const pass = CONFIG.wifi.password;
+  const text = `Red (SSID): ${ssid}\nContraseña: ${pass}`;
+  try {
+    await navigator.clipboard.writeText(text);
+    if (hint) hint.textContent = 'Copiado. Ahora abre Wi‑Fi y pega la contraseña.';
+  } catch {
+    if (hint) hint.textContent = 'No se pudo copiar. Selecciona y copia manualmente SSID/contraseña.';
+  }
+}
+
+function openWifiSettings() {
+  const hint = $('wifiHint');
+
+  const ua = navigator.userAgent || '';
+  const isAndroid = /Android/i.test(ua);
+  const isIOS = /iPhone|iPad|iPod/i.test(ua);
+
+  // Realidad:
+  // - No hay un método web universal para abrir Ajustes Wi‑Fi.
+  // - Android: algunos navegadores aceptan intent://
+  // - iOS: Safari casi siempre bloquea deep links a Ajustes.
+
+  if (isAndroid) {
+    // Intent hacia ajustes Wi‑Fi
+    try {
+      window.location.href = 'intent:#Intent;action=android.settings.WIFI_SETTINGS;end';
+      if (hint) hint.textContent = 'Si no abre automáticamente: Ajustes > Wi‑Fi.';
+      return;
+    } catch {
+      if (hint) hint.textContent = 'Abre Ajustes > Wi‑Fi manualmente.';
+      return;
+    }
+  }
+
+  if (isIOS) {
+    // iOS: no confiable desde web.
+    if (hint) hint.textContent = 'En iPhone: abre Ajustes > Wi‑Fi manualmente (iOS no permite abrirlo desde el navegador).';
+    return;
+  }
+
+  if (hint) hint.textContent = 'Abre Ajustes > Wi‑Fi manualmente.';
+}
+
+function openInMapsUrl(lat, lon, label) {
+  const q = encodeURIComponent(label ? `${label}` : `${lat},${lon}`);
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(lat + ',' + lon)}&query_place_id=&q=${q}`;
+}
+
+function formatCategory(cat) {
+  const map = {
+    comida: 'Comida',
+    tienda: 'Tienda',
+    salud: 'Salud',
+    emergencia: 'Emergencia',
+    otro: 'Otro',
+  };
+  return map[cat] ?? cat;
+}
+
+function buildWhatsappUrl(phone, message) {
+  const base = 'https://wa.me/';
+  const p = String(phone ?? '').replace(/\D/g, '');
+  const text = message ? `?text=${encodeURIComponent(message)}` : '';
+  return `${base}${p}${text}`;
+}
+
+function iconSvg(name) {
+  if (name === 'whatsapp') {
+    return `
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+        <path fill="currentColor" d="M20.52 3.48A11.86 11.86 0 0 0 12.04 0C5.45 0 .1 5.35.1 11.94c0 2.1.55 4.16 1.6 5.97L0 24l6.28-1.64a11.9 11.9 0 0 0 5.76 1.46h.01c6.59 0 11.94-5.35 11.94-11.94 0-3.19-1.24-6.18-3.47-8.4ZM12.04 21.8h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.73.97 1-3.64-.24-.37a9.84 9.84 0 0 1-1.52-5.23c0-5.48 4.46-9.94 9.95-9.94 2.66 0 5.16 1.04 7.03 2.91a9.87 9.87 0 0 1 2.91 7.03c0 5.48-4.46 9.94-9.95 9.94Zm5.77-7.88c-.31-.16-1.82-.9-2.1-1-.28-.1-.49-.16-.69.16-.2.31-.79 1-.97 1.21-.18.2-.36.23-.67.08-.31-.16-1.31-.48-2.49-1.53-.92-.82-1.54-1.83-1.72-2.14-.18-.31-.02-.48.13-.64.14-.14.31-.36.46-.54.16-.18.2-.31.31-.51.1-.2.05-.39-.03-.54-.08-.16-.69-1.66-.95-2.27-.25-.6-.5-.52-.69-.53h-.59c-.2 0-.54.08-.82.39-.28.31-1.08 1.05-1.08 2.56s1.11 2.97 1.26 3.18c.16.2 2.18 3.33 5.29 4.66.74.32 1.31.51 1.76.65.74.24 1.41.2 1.94.12.59-.09 1.82-.74 2.08-1.46.26-.72.26-1.34.18-1.46-.08-.13-.28-.2-.59-.36Z"/>
+      </svg>
+    `;
+  }
+
+  if (name === 'maps') {
+    return `
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+        <path fill="currentColor" d="M12 2c-3.86 0-7 3.14-7 7 0 5.25 7 13 7 13s7-7.75 7-13c0-3.86-3.14-7-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/>
+      </svg>
+    `;
+  }
+
+  return '';
+}
+
+function renderCategoryOptions() {
+  const select = $('categorySelect');
+  if (!select) return;
+
+  const categories = Array.from(new Set(PLACES.map((p) => p.category))).sort();
+  for (const c of categories) {
+    const opt = document.createElement('option');
+    opt.value = c;
+    opt.textContent = formatCategory(c);
+    select.appendChild(opt);
+  }
+}
+
+function renderPlaces() {
+  const list = $('placesList');
+  if (!list) return;
+
+  const q = normalizeText($('searchInput')?.value ?? '');
+  const cat = $('categorySelect')?.value ?? '';
+
+  const filtered = PLACES.filter((p) => {
+    if (cat && p.category !== cat) return false;
+    if (!q) return true;
+    const hay = normalizeText(`${p.name} ${p.note ?? ''} ${p.category}`);
+    return hay.includes(q);
+  });
+
+  if (filtered.length === 0) {
+    list.innerHTML = `<div class="card"><div class="card__title">Sin resultados</div><div class="card__text">Prueba otra búsqueda o categoría.</div></div>`;
+    return;
+  }
+
+  list.innerHTML = filtered
+    .map((p) => {
+      const maps = openInMapsUrl(p.lat, p.lon, p.name);
+      const note = p.note ? `<div class="card__text">${escapeHtml(p.note)}</div>` : '';
+      const hours = p.hours ? `<span class="tag">Horario: ${escapeHtml(p.hours)}</span>` : '';
+      const waUrl = p.whatsapp?.phone ? buildWhatsappUrl(p.whatsapp.phone, p.whatsapp.message) : '';
+      const wa = waUrl
+        ? `<a class="icon-btn icon-btn--wa" href="${waUrl}" target="_blank" rel="noreferrer" aria-label="Enviar WhatsApp">${iconSvg('whatsapp')}</a>`
+        : '';
+      const mapsBtn = `<a class="icon-btn icon-btn--maps" href="${maps}" target="_blank" rel="noreferrer" aria-label="Abrir en Maps">${iconSvg('maps')}</a>`;
+      return `
+        <div class="card">
+          <div class="card__title">${escapeHtml(p.name)}</div>
+          ${note}
+          <div class="place__meta">
+            <span class="tag">${escapeHtml(formatCategory(p.category))}</span>
+            ${hours}
+          </div>
+          <div class="place__actions">
+            ${mapsBtn}
+            ${wa}
+          </div>
+        </div>
+      `;
+    })
+    .join('');
+}
+
+async function shareMyLocation() {
+  const hint = $('shareLocationHint');
+  try {
+    if (!navigator.geolocation) {
+      if (hint) hint.textContent = 'Tu dispositivo no soporta geolocalización.';
+      return;
+    }
+
+    const pos = await new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(resolve, reject, {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 15000,
+      });
+    });
+
+    const lat = pos.coords.latitude;
+    const lon = pos.coords.longitude;
+    const url = `https://maps.google.com/?q=${encodeURIComponent(lat + ',' + lon)}`;
+    const text = `Mi ubicación: ${lat.toFixed(6)}, ${lon.toFixed(6)}\n${url}`;
+
+    if (navigator.share) {
+      await navigator.share({
+        title: 'Mi ubicación',
+        text,
+        url,
+      });
+      if (hint) hint.textContent = 'Ubicación compartida.';
+      return;
+    }
+
+    await navigator.clipboard.writeText(text);
+    if (hint) hint.textContent = 'Copiado al portapapeles. Pégalo en WhatsApp/SMS.';
+  } catch (e) {
+    if (hint) hint.textContent = 'No se pudo obtener o compartir la ubicación.';
+  }
+}
+
+function wireEvents() {
+  $('searchInput')?.addEventListener('input', renderPlaces);
+  $('categorySelect')?.addEventListener('change', renderPlaces);
+  $('shareLocationBtn')?.addEventListener('click', shareMyLocation);
+  $('copyWifiBtn')?.addEventListener('click', copyWifiToClipboard);
+  $('openWifiSettingsBtn')?.addEventListener('click', openWifiSettings);
+}
+
+function init() {
+  renderRoomBadge();
+  setWifiUi();
+  renderCategoryOptions();
+  renderPlaces();
+  wireEvents();
+}
+
+document.addEventListener('DOMContentLoaded', init);
