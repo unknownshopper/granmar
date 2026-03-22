@@ -2,8 +2,8 @@
 
 const CONFIG = {
   wifi: {
-    ssid: 'GRANMAR_WIFI',
-    password: 'CAMBIAR_ESTA_CLAVE',
+    ssid: 'baja',
+    password: 'MelaPelas#01',
     encryption: 'WPA',
     hidden: false,
   },
@@ -17,7 +17,7 @@ const CONFIG = {
  * Datos OFFLINE: aquí pondrás coordenadas reales.
  * Por ahora dejo ejemplos para que sustituyas.
  */
-const PLACES = [
+const PLACES = Array.isArray(window.GRANMAR_PLACES) && window.GRANMAR_PLACES.length > 0 ? window.GRANMAR_PLACES : [
   {
     id: 'tortas-1',
     name: 'Tortas (Ejemplo)',
