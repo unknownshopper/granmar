@@ -7,6 +7,10 @@ const CONFIG = {
     encryption: 'WPA',
     hidden: false,
   },
+  location: {
+    lat: 18.35,
+    lon: -92.64,
+  },
   rooms: {
     total: 16,
     paramNames: ['hab', 'room'],
@@ -25,7 +29,7 @@ const PLACES = Array.isArray(window.GRANMAR_PLACES) && window.GRANMAR_PLACES.len
     note: 'Referencia: salida hacia la carretera',
     hours: '9:00 a 20:00',
     whatsapp: {
-      phone: '5219999999999',
+      phone: '529991429627',
       message: 'Hola, estoy en Gran Mar. ¿Me compartes tu menú/ubicación y tiempos de entrega? Gracias.',
     },
     lat: 18.000001,
@@ -38,7 +42,7 @@ const PLACES = Array.isArray(window.GRANMAR_PLACES) && window.GRANMAR_PLACES.len
     note: 'A 5-10 min',
     hours: '9:00 a 20:00',
     whatsapp: {
-      phone: '5219999999999',
+      phone: '529991429627',
       message: 'Hola, estoy en Gran Mar. ¿Me confirmas si estás abierto y tu ubicación? Gracias.',
     },
     lat: 18.000002,
@@ -51,7 +55,7 @@ const PLACES = Array.isArray(window.GRANMAR_PLACES) && window.GRANMAR_PLACES.len
     note: 'Pregunta por “depósito”',
     hours: '9:00 a 20:00',
     whatsapp: {
-      phone: '5219999999999',
+      phone: '529991429627',
       message: 'Hola, estoy en Gran Mar. ¿Tienes servicio a domicilio? Gracias.',
     },
     lat: 18.000003,
@@ -120,6 +124,29 @@ function setWifiUi() {
   const passEl = $('wifiPass');
   if (ssidEl) ssidEl.textContent = CONFIG.wifi.ssid;
   if (passEl) passEl.textContent = CONFIG.wifi.password;
+}
+
+function initParallax() {
+  const el = document.querySelector('.parallax-bg');
+  if (!el) return;
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  let ticking = false;
+  const update = () => {
+    ticking = false;
+    const y = window.scrollY || 0;
+    const offset = Math.min(120, Math.max(-120, y * 0.12));
+    el.style.transform = `translate3d(0, ${-offset}px, 0)`;
+  };
+
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(update);
+  };
+
+  update();
+  window.addEventListener('scroll', onScroll, { passive: true });
 }
 
 async function copyWifiToClipboard() {
@@ -193,6 +220,108 @@ function buildWhatsappUrl(phone, message) {
   return `${base}${p}${text}`;
 }
 
+function getLocation() {
+  const injected = window.GRANMAR_LOCATION;
+  const lat = Number(injected?.lat ?? CONFIG.location.lat);
+  const lon = Number(injected?.lon ?? CONFIG.location.lon);
+  if (Number.isFinite(lat) && Number.isFinite(lon)) return { lat, lon };
+  return { lat: CONFIG.location.lat, lon: CONFIG.location.lon };
+}
+
+function setWeatherMap() {
+  const iframe = $('weatherMap');
+  if (!iframe) return;
+
+  const { lat, lon } = getLocation();
+  const src = `https://embed.windy.com/embed2.html?lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lon)}&detailLat=${encodeURIComponent(lat)}&detailLon=${encodeURIComponent(lon)}&width=650&height=450&zoom=9&level=surface&overlay=rain&product=ecmwf&menu=&message=true&marker=true&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=km%2Fh&metricTemp=%C2%B0C&radarRange=-1`;
+  iframe.src = src;
+}
+
+function weatherCodeLabel(code) {
+  const map = {
+    0: 'Despejado',
+    1: 'Mayormente despejado',
+    2: 'Parcialmente nublado',
+    3: 'Nublado',
+    45: 'Niebla',
+    48: 'Niebla',
+    51: 'Llovizna',
+    53: 'Llovizna',
+    55: 'Llovizna',
+    56: 'Llovizna',
+    57: 'Llovizna',
+    61: 'Lluvia',
+    63: 'Lluvia',
+    65: 'Lluvia fuerte',
+    66: 'Lluvia',
+    67: 'Lluvia',
+    71: 'Nieve',
+    73: 'Nieve',
+    75: 'Nieve',
+    77: 'Nieve',
+    80: 'Chubascos',
+    81: 'Chubascos',
+    82: 'Chubascos fuertes',
+    85: 'Chubascos',
+    86: 'Chubascos',
+    95: 'Tormenta',
+    96: 'Tormenta',
+    99: 'Tormenta',
+  };
+  return map[code] ?? 'Clima';
+}
+
+function formatShortDate(isoDate) {
+  const d = new Date(`${isoDate}T12:00:00`);
+  return d.toLocaleDateString('es-MX', { weekday: 'short', day: '2-digit', month: 'short' });
+}
+
+async function loadWeather() {
+  const container = $('weatherForecast');
+  const hint = $('weatherHint');
+  if (!container) return;
+
+  const { lat, lon } = getLocation();
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${encodeURIComponent(lat)}&longitude=${encodeURIComponent(lon)}&timezone=auto&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_sum,windspeed_10m_max&forecast_days=3`;
+
+  try {
+    if (hint) hint.textContent = 'Cargando pronóstico…';
+    const res = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) throw new Error('weather_fetch_failed');
+    const data = await res.json();
+    const daily = data?.daily;
+    const times = daily?.time ?? [];
+    const codes = daily?.weathercode ?? [];
+    const tmax = daily?.temperature_2m_max ?? [];
+    const tmin = daily?.temperature_2m_min ?? [];
+    const rain = daily?.precipitation_sum ?? [];
+    const wind = daily?.windspeed_10m_max ?? [];
+
+    container.innerHTML = times
+      .map((t, i) => {
+        const title = formatShortDate(t);
+        const desc = weatherCodeLabel(codes[i]);
+        const temp = `${Math.round(tmin[i])}° / ${Math.round(tmax[i])}°`;
+        const extra = `${Math.round(rain[i] ?? 0)} mm · Viento ${Math.round(wind[i] ?? 0)} km/h`;
+        return `
+          <div class="card">
+            <div class="card__title">${escapeHtml(title)}</div>
+            <div class="card__text">${escapeHtml(desc)}</div>
+            <div class="place__meta">
+              <span class="tag">${escapeHtml(temp)}</span>
+              <span class="tag">${escapeHtml(extra)}</span>
+            </div>
+          </div>
+        `;
+      })
+      .join('');
+
+    if (hint) hint.textContent = '';
+  } catch {
+    if (hint) hint.textContent = 'No se pudo cargar el pronóstico. Revisa tu conexión a internet.';
+  }
+}
+
 function iconSvg(name) {
   if (name === 'whatsapp') {
     return `
@@ -211,6 +340,61 @@ function iconSvg(name) {
   }
 
   return '';
+}
+
+function getPlaceById(id) {
+  if (!id) return null;
+  return PLACES.find((p) => String(p.id) === String(id)) ?? null;
+}
+
+function closePlaceModal() {
+  const modal = $('placeModal');
+  if (!modal) return;
+  modal.setAttribute('hidden', '');
+  modal.setAttribute('aria-hidden', 'true');
+  document.documentElement.style.overflow = '';
+}
+
+function openPlaceModal(place) {
+  const modal = $('placeModal');
+  const content = $('placeModalContent');
+  if (!modal || !content || !place) return;
+
+  const maps = openInMapsUrl(place.lat, place.lon, place.name);
+  const waUrl = place.whatsapp?.phone ? buildWhatsappUrl(place.whatsapp.phone, place.whatsapp.message) : '';
+  const note = place.note ? `<p class="gm-muted">${escapeHtml(place.note)}</p>` : '';
+  const hours = place.hours ? `<span class="gm-chip">Horario: ${escapeHtml(place.hours)}</span>` : '';
+
+  content.innerHTML = `
+    <h3 style="margin: 0 0 0.75rem 0;">${escapeHtml(place.name)}</h3>
+    <div class="gm-chips">
+      <span class="gm-chip">${escapeHtml(formatCategory(place.category))}</span>
+      ${hours}
+    </div>
+    ${note}
+    <div class="gm-actions" style="margin-top: 1rem;">
+      <a class="button" href="${maps}" target="_blank" rel="noreferrer">Abrir en Maps</a>
+      ${waUrl ? `<a class="button primary" href="${waUrl}" target="_blank" rel="noreferrer">Enviar WhatsApp</a>` : ''}
+    </div>
+  `;
+
+  modal.removeAttribute('hidden');
+  modal.setAttribute('aria-hidden', 'false');
+  document.documentElement.style.overflow = 'hidden';
+}
+
+function wirePlaceModal() {
+  const modal = $('placeModal');
+  if (!modal) return;
+
+  $('placeModalClose')?.addEventListener('click', closePlaceModal);
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closePlaceModal();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closePlaceModal();
+  });
 }
 
 function renderCategoryOptions() {
@@ -256,7 +440,7 @@ function renderPlaces() {
         : '';
       const mapsBtn = `<a class="icon-btn icon-btn--maps" href="${maps}" target="_blank" rel="noreferrer" aria-label="Abrir en Maps">${iconSvg('maps')}</a>`;
       return `
-        <div class="card">
+        <div class="card place-card" role="button" tabindex="0" data-place-id="${escapeHtml(p.id)}" aria-label="Ver detalles">
           <div class="card__title">${escapeHtml(p.name)}</div>
           ${note}
           <div class="place__meta">
@@ -271,6 +455,37 @@ function renderPlaces() {
       `;
     })
     .join('');
+}
+
+function wirePlaceCards() {
+  const list = $('placesList');
+  if (!list) return;
+
+  const shouldIgnore = (el) => {
+    if (!el) return false;
+    return Boolean(el.closest('a'));
+  };
+
+  list.addEventListener('click', (e) => {
+    if (shouldIgnore(e.target)) return;
+    const card = e.target.closest('[data-place-id]');
+    if (!card) return;
+    const id = card.getAttribute('data-place-id');
+    const p = getPlaceById(id);
+    if (!p) return;
+    openPlaceModal(p);
+  });
+
+  list.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const card = e.target.closest('[data-place-id]');
+    if (!card) return;
+    e.preventDefault();
+    const id = card.getAttribute('data-place-id');
+    const p = getPlaceById(id);
+    if (!p) return;
+    openPlaceModal(p);
+  });
 }
 
 async function shareMyLocation() {
@@ -317,11 +532,16 @@ function wireEvents() {
   $('shareLocationBtn')?.addEventListener('click', shareMyLocation);
   $('copyWifiBtn')?.addEventListener('click', copyWifiToClipboard);
   $('openWifiSettingsBtn')?.addEventListener('click', openWifiSettings);
+  wirePlaceModal();
+  wirePlaceCards();
 }
 
 function init() {
   renderRoomBadge();
   setWifiUi();
+  initParallax();
+  setWeatherMap();
+  loadWeather();
   renderCategoryOptions();
   renderPlaces();
   wireEvents();

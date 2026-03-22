@@ -10,17 +10,18 @@
     <meta property="og:title" content="Gran Mar | Guía del Huésped" />
     <meta property="og:description" content="Información del huésped, Wi‑Fi y lugares cercanos." />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://REEMPLAZAR-DOMINIO/img/logo.png" />
-    <meta property="og:url" content="https://REEMPLAZAR-DOMINIO/" />
+    <meta property="og:image" content="https://unknownshopper.github.io/granmar/img/insti02.jpeg" />
+    <meta property="og:url" content="https://unknownshopper.github.io/granmar/" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Gran Mar | Guía del Huésped" />
     <meta name="twitter:description" content="Información del huésped, Wi‑Fi y lugares cercanos." />
-    <meta name="twitter:image" content="https://REEMPLAZAR-DOMINIO/img/logo.png" />
+    <meta name="twitter:image" content="https://unknownshopper.github.io/granmar/img/insti02.jpeg" />
 
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
+    <div class="parallax-bg" aria-hidden="true"></div>
     <header class="topbar">
       <div class="container">
         <div class="brand">
@@ -32,6 +33,7 @@
         </div>
         <nav class="nav">
           <a href="#wifi">Wi-Fi</a>
+          <a href="#clima">Clima</a>
           <a href="#lugares">Lugares</a>
           <a href="#emergencia">Emergencia</a>
           <a href="#info">Info</a>
@@ -107,6 +109,34 @@
                 <div class="list__item">Reporta cualquier falla por WhatsApp o llamada.</div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="clima" class="section" aria-label="Clima">
+        <div class="section__head">
+          <h2>Clima (3 días)</h2>
+          <div class="muted">Pronóstico aproximado para la zona.</div>
+        </div>
+
+        <div class="grid grid--2">
+          <div class="card">
+            <div class="card__title">Mapa meteorológico</div>
+            <div class="card__text">Si no carga, revisa tu conexión a internet.</div>
+            <div class="embed" aria-label="Mapa meteorológico">
+              <iframe
+                id="weatherMap"
+                title="Mapa meteorológico"
+                loading="lazy"
+                referrerpolicy="no-referrer"
+                allowfullscreen
+              ></iframe>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card__title">Pronóstico</div>
+            <div id="weatherForecast" class="grid grid--cards"></div>
+            <div class="muted" id="weatherHint"></div>
           </div>
         </div>
       </section>

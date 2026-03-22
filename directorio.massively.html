@@ -1,0 +1,265 @@
+<!DOCTYPE HTML>
+<html lang="es">
+  <head>
+    <title>Gran Mar | Directorio</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+
+    <meta property="og:title" content="Gran Mar | Directorio" />
+    <meta property="og:description" content="Negocios, servicios y contactos útiles en Gran Mar." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://unknownshopper.github.io/granmar/img/insti02.jpeg" />
+    <meta property="og:url" content="https://unknownshopper.github.io/granmar/directorio.massively.html" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Gran Mar | Directorio" />
+    <meta name="twitter:description" content="Negocios, servicios y contactos útiles en Gran Mar." />
+    <meta name="twitter:image" content="https://unknownshopper.github.io/granmar/img/insti02.jpeg" />
+
+    <link rel="stylesheet" href="nuevotemplate/assets/css/main.css" />
+    <link rel="stylesheet" href="./granmar.css" />
+    <noscript><link rel="stylesheet" href="nuevotemplate/assets/css/noscript.css" /></noscript>
+
+    <style>
+      #wrapper {
+        background-image: url('./img/granmaratardecer.webp');
+      }
+
+      #header .logo {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      #header .logo img {
+        height: 36px;
+        width: auto;
+        border-radius: 10px;
+      }
+
+      #granmarApp .gm-place-grid {
+        display: grid;
+        gap: 1.25rem;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      @media screen and (max-width: 980px) {
+        #granmarApp .gm-place-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media screen and (max-width: 736px) {
+        #granmarApp .gm-place-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      #granmarApp .gm-place-grid .card:not(.place-card) {
+        border: 0;
+        background: transparent;
+        box-shadow: none;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body class="is-preload">
+    <div id="wrapper" class="fade-in">
+      <header id="header">
+        <a href="index.massively.html" class="logo">
+          <img src="./img/logo.png" alt="Gran Mar" />
+          <span>Directorio</span>
+        </a>
+      </header>
+
+      <nav id="nav">
+        <ul class="links">
+          <li><a href="index.massively.html">Inicio</a></li>
+          <li class="active"><a class="scrolly" href="#directorio">Directorio</a></li>
+        </ul>
+      </nav>
+
+      <div id="main">
+        <article class="post featured">
+          <header class="major">
+            <span class="date">Servicios</span>
+            <h2><a href="#">Directorio</a></h2>
+            <p>Negocios, servicios y emergencias dentro y alrededor del fraccionamiento.</p>
+            <div id="roomBadge" class="gm-chip" hidden></div>
+          </header>
+          <ul class="actions special">
+            <li><a href="#directorio" class="button scrolly">Ver lista</a></li>
+          </ul>
+        </article>
+
+        <section class="post" id="granmarApp">
+          <header class="major" id="directorio">
+            <h2>Negocios y servicios</h2>
+            <p class="gm-muted">Busca por nombre o filtra por categoría.</p>
+          </header>
+
+          <div class="gm-controls">
+            <div>
+              <label for="searchInput">Buscar</label>
+              <input id="searchInput" type="search" placeholder="lavandería, médico, tortas, electricista…" autocomplete="off" />
+            </div>
+            <div>
+              <label for="categorySelect">Categoría</label>
+              <select id="categorySelect">
+                <option value="">Todas</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="placesList" class="gm-place-grid" aria-live="polite"></div>
+
+          <div style="margin-top: 2rem;" class="gm-muted">
+            Consejo: agrega esta página a tu pantalla de inicio para abrirla rápido.
+          </div>
+
+          <script>
+            window.GRANMAR_PLACES = [
+              {
+                id: 'lavanderia-1',
+                name: 'Lavandería (Ejemplo)',
+                category: 'servicios',
+                note: 'Lavado y secado. Entrega el mismo día (según disponibilidad).',
+                hours: '9:00 a 20:00',
+                whatsapp: {
+                  phone: '529991429627',
+                  message: 'Hola, estoy en Gran Mar. ¿Me compartes costos y tiempo de entrega? Gracias.',
+                },
+                lat: 18.000101,
+                lon: -92.000101,
+              },
+              {
+                id: 'medico-1',
+                name: 'Médico (Ejemplo)',
+                category: 'salud',
+                note: 'Consulta general. Llamar antes de ir.',
+                whatsapp: {
+                  phone: '529991429627',
+                  message: 'Hola, estoy en Gran Mar. ¿Tienes disponibilidad para consulta? Gracias.',
+                },
+                lat: 18.000102,
+                lon: -92.000102,
+              },
+              {
+                id: 'tortas-1',
+                name: 'Tortas (Ejemplo)',
+                category: 'alimentos',
+                note: 'Pedido para llevar / a domicilio (según zona).',
+                hours: '9:00 a 20:00',
+                whatsapp: {
+                  phone: '529991429627',
+                  message: 'Hola, estoy en Gran Mar. ¿Me compartes tu menú y tiempos de entrega? Gracias.',
+                },
+                lat: 18.000103,
+                lon: -92.000103,
+              },
+              {
+                id: 'miscelanea-1',
+                name: 'Miscelánea / Tienda (Ejemplo)',
+                category: 'compras',
+                note: 'Agua, snacks, hielo, básicos.',
+                hours: '9:00 a 20:00',
+                whatsapp: {
+                  phone: '529991429627',
+                  message: 'Hola, estoy en Gran Mar. ¿Tienes abierto y vendes hielo/agua? Gracias.',
+                },
+                lat: 18.000104,
+                lon: -92.000104,
+              },
+              {
+                id: 'electricista-1',
+                name: 'Electricista (Ejemplo)',
+                category: 'mantenimiento',
+                note: 'Servicio a domicilio. Emergencias según disponibilidad.',
+                whatsapp: {
+                  phone: '529991429627',
+                  message: 'Hola, estoy en Gran Mar. ¿Puedes apoyar con un servicio eléctrico? Gracias.',
+                },
+                lat: 18.000105,
+                lon: -92.000105,
+              },
+              {
+                id: 'bebidas-1',
+                name: 'Bebidas / Depósito (Ejemplo)',
+                category: 'bebidas',
+                note: 'Refrescos y cerveza. Pregunta por servicio a domicilio.',
+                hours: '9:00 a 20:00',
+                whatsapp: {
+                  phone: '529991429627',
+                  message: 'Hola, estoy en Gran Mar. ¿Tienes servicio a domicilio y precios? Gracias.',
+                },
+                lat: 18.000106,
+                lon: -92.000106,
+              },
+              {
+                id: 'alimentos-1',
+                name: 'Comida / Cocina económica (Ejemplo)',
+                category: 'alimentos',
+                note: 'Comida corrida. Pregunta el menú del día.',
+                hours: '9:00 a 20:00',
+                whatsapp: {
+                  phone: '529991429627',
+                  message: 'Hola, estoy en Gran Mar. ¿Cuál es el menú del día y horarios? Gracias.',
+                },
+                lat: 18.000107,
+                lon: -92.000107,
+              },
+              {
+                id: 'emergencia-1',
+                name: 'Emergencia / Punto de auxilio (Ejemplo)',
+                category: 'emergencia',
+                note: 'Si no hay señal, intenta moverte a un punto alto o cerca de carretera.',
+                lat: 18.000108,
+                lon: -92.000108,
+              },
+            ];
+          </script>
+        </section>
+      </div>
+
+      <footer id="footer">
+        <section class="split contact">
+          <section>
+            <h3>Créditos</h3>
+            <p>
+              <a href="https://menutags.unknownshoppers.com" target="_blank" rel="noreferrer">MENUTAGS</a>
+              by
+              <a href="https://unknownshoppers.com" target="_blank" rel="noreferrer">The Unknown Shopper</a>
+            </p>
+          </section>
+        </section>
+      </footer>
+
+      <div id="copyright">
+        <ul>
+          <li>&copy; Gran Mar</li>
+          <li>
+            <a href="https://html5up.net" target="_blank" rel="noreferrer">HTML5 UP</a>
+          </li>
+        </ul>
+      </div>
+
+      <div id="placeModal" class="gm-modal" hidden aria-hidden="true" aria-label="Detalles" role="dialog">
+        <div class="gm-modal__panel" role="document">
+          <div class="gm-modal__head">
+            <div class="gm-muted">Detalles</div>
+            <button id="placeModalClose" class="gm-modal__close" type="button">Cerrar</button>
+          </div>
+          <div id="placeModalContent"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="nuevotemplate/assets/js/jquery.min.js"></script>
+    <script src="nuevotemplate/assets/js/jquery.scrollex.min.js"></script>
+    <script src="nuevotemplate/assets/js/jquery.scrolly.min.js"></script>
+    <script src="nuevotemplate/assets/js/browser.min.js"></script>
+    <script src="nuevotemplate/assets/js/breakpoints.min.js"></script>
+    <script src="nuevotemplate/assets/js/util.js"></script>
+    <script src="nuevotemplate/assets/js/main.js"></script>
+    <script src="./script.js"></script>
+  </body>
+</html>
