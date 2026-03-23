@@ -127,26 +127,50 @@ function setWifiUi() {
 }
 
 function initParallax() {
-  const el = document.querySelector('.parallax-bg');
-  if (!el) return;
+  const els = Array.from(document.querySelectorAll('.parallax-bg'));
+  if (els.length === 0) return;
   if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const visible = new Set();
+  const strength = 28;
 
   let ticking = false;
   const update = () => {
     ticking = false;
-    const y = window.scrollY || 0;
-    const offset = Math.min(120, Math.max(-120, y * 0.12));
-    el.style.transform = `translate3d(0, ${-offset}px, 0)`;
+    const vh = window.innerHeight || 0;
+    for (const el of visible) {
+      const rect = el.getBoundingClientRect();
+      const center = rect.top + rect.height / 2;
+      const denom = vh / 2 + rect.height / 2;
+      const t = denom ? (center - vh / 2) / denom : 0;
+      const clamped = Math.max(-1, Math.min(1, t));
+      const offset = -clamped * strength;
+      el.style.transform = `translate3d(0, ${offset}px, 0)`;
+    }
   };
 
-  const onScroll = () => {
+  const requestUpdate = () => {
     if (ticking) return;
     ticking = true;
     window.requestAnimationFrame(update);
   };
 
-  update();
-  window.addEventListener('scroll', onScroll, { passive: true });
+  const io = new IntersectionObserver(
+    (entries) => {
+      for (const e of entries) {
+        if (e.isIntersecting) visible.add(e.target);
+        else visible.delete(e.target);
+      }
+      requestUpdate();
+    },
+    { root: null, threshold: 0 }
+  );
+
+  for (const el of els) io.observe(el);
+
+  requestUpdate();
+  window.addEventListener('scroll', requestUpdate, { passive: true });
+  window.addEventListener('resize', requestUpdate, { passive: true });
 }
 
 async function copyWifiToClipboard() {
@@ -206,6 +230,14 @@ function formatCategory(cat) {
     tienda: 'Tienda',
     salud: 'Salud',
     emergencia: 'Emergencia',
+    alimentos: 'Alimentos',
+    servicios: 'Servicios',
+    compras: 'Compras',
+    mantenimiento: 'Mantenimiento',
+    bebidas: 'Bebidas',
+    hogar: 'Hogar',
+    mandados: 'Mandados',
+    eventos: 'Eventos',
     otro: 'Otro',
   };
   return map[cat] ?? cat;
@@ -347,6 +379,8 @@ function getPlaceById(id) {
   return PLACES.find((p) => String(p.id) === String(id)) ?? null;
 }
 
+let GM_SELECTED_CATEGORY = '';
+
 function closePlaceModal() {
   const modal = $('placeModal');
   if (!modal) return;
@@ -410,12 +444,49 @@ function renderCategoryOptions() {
   }
 }
 
+function renderCategoryButtons() {
+  const host = $('categoryButtons');
+  if (!host) return;
+
+  const counts = new Map();
+  for (const p of PLACES) counts.set(p.category, (counts.get(p.category) ?? 0) + 1);
+
+  const categories = Array.from(new Set(PLACES.map((p) => p.category))).sort();
+  host.innerHTML = categories
+    .map((c) => {
+      const pressed = GM_SELECTED_CATEGORY === c ? 'true' : 'false';
+      const count = counts.get(c) ?? 0;
+      return `
+        <button type="button" class="gm-cat-btn" data-cat="${escapeHtml(c)}" aria-pressed="${pressed}">
+          <strong>${escapeHtml(formatCategory(c))}</strong>
+          <span>${count} opci${count === 1 ? 'ón' : 'ones'}</span>
+        </button>
+      `;
+    })
+    .join('');
+}
+
 function renderPlaces() {
   const list = $('placesList');
   if (!list) return;
 
   const q = normalizeText($('searchInput')?.value ?? '');
-  const cat = $('categorySelect')?.value ?? '';
+  const catFromSelect = $('categorySelect')?.value ?? '';
+  const cat = catFromSelect || GM_SELECTED_CATEGORY;
+
+  const hint = $('placesHint');
+  if (hint) {
+    if (!cat && !$('categorySelect')) hint.textContent = 'Elige una categoría para mostrar la lista.';
+    else hint.textContent = '';
+  }
+
+  if (!cat && !$('categorySelect')) {
+    list.hidden = true;
+    list.innerHTML = '';
+    return;
+  }
+
+  list.hidden = false;
 
   const filtered = PLACES.filter((p) => {
     if (cat && p.category !== cat) return false;
@@ -534,6 +605,18 @@ function wireEvents() {
   $('openWifiSettingsBtn')?.addEventListener('click', openWifiSettings);
   wirePlaceModal();
   wirePlaceCards();
+
+  const cats = $('categoryButtons');
+  if (cats) {
+    cats.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-cat]');
+      if (!btn) return;
+      const next = btn.getAttribute('data-cat') ?? '';
+      GM_SELECTED_CATEGORY = GM_SELECTED_CATEGORY === next ? '' : next;
+      renderCategoryButtons();
+      renderPlaces();
+    });
+  }
 }
 
 function init() {
@@ -543,6 +626,7 @@ function init() {
   setWeatherMap();
   loadWeather();
   renderCategoryOptions();
+  renderCategoryButtons();
   renderPlaces();
   wireEvents();
 }

@@ -95,6 +95,130 @@
   background: rgba(255, 255, 255, 0.96);
 }
 
+#granmarApp .gm-category-buttons {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: 1rem;
+}
+
+@media screen and (max-width: 980px) {
+  #granmarApp .gm-category-buttons {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media screen and (max-width: 736px) {
+  #granmarApp .gm-category-buttons {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+#granmarApp .gm-cat-btn {
+  border: 1px solid var(--gm-border);
+  background: var(--gm-panel);
+  border-radius: 16px;
+  padding: 0.95rem 0.9rem;
+  box-shadow: var(--gm-shadow);
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  line-height: 1.2;
+  height: auto;
+  min-height: 72px;
+  align-items: flex-start;
+  justify-content: center;
+  white-space: normal;
+  transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease, border-color 160ms ease;
+}
+
+#granmarApp .gm-cat-btn strong {
+  display: block;
+  font-size: 0.95rem;
+  line-height: 1.15;
+}
+
+#granmarApp .gm-cat-btn span {
+  display: block;
+  margin-top: 0;
+  color: var(--gm-muted);
+  font-size: 0.75rem;
+  line-height: 1.1;
+  font-weight: 600;
+  opacity: 0.75;
+  letter-spacing: 0.06em;
+}
+
+#granmarApp .gm-cat-btn[aria-pressed="true"] {
+  border-color: rgba(45, 120, 255, 0.45);
+  background: rgba(45, 120, 255, 0.08);
+  box-shadow: 0 22px 55px rgba(2, 28, 48, 0.16);
+}
+
+@media (hover: hover) {
+  #granmarApp .gm-cat-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 22px 55px rgba(2, 28, 48, 0.18);
+  }
+}
+
+#granmarApp .gm-category-buttons {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: 1rem;
+}
+
+@media screen and (max-width: 980px) {
+  #granmarApp .gm-category-buttons {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media screen and (max-width: 736px) {
+  #granmarApp .gm-category-buttons {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+#granmarApp .gm-cat-btn {
+  border: 1px solid var(--gm-border);
+  background: var(--gm-panel);
+  border-radius: 16px;
+  padding: 0.95rem 0.9rem;
+  box-shadow: var(--gm-shadow);
+  cursor: pointer;
+  text-align: left;
+  transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease, border-color 160ms ease;
+}
+
+#granmarApp .gm-cat-btn strong {
+  display: block;
+  font-size: 0.95rem;
+}
+
+#granmarApp .gm-cat-btn span {
+  display: block;
+  margin-top: 0.25rem;
+  color: var(--gm-muted);
+  font-size: 0.8rem;
+}
+
+#granmarApp .gm-cat-btn[aria-pressed="true"] {
+  border-color: rgba(45, 120, 255, 0.45);
+  background: rgba(45, 120, 255, 0.08);
+  box-shadow: 0 22px 55px rgba(2, 28, 48, 0.16);
+}
+
+@media (hover: hover) {
+  #granmarApp .gm-cat-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 22px 55px rgba(2, 28, 48, 0.18);
+  }
+}
+
 #granmarApp .gm-embed {
   width: 100%;
   aspect-ratio: 16 / 10;

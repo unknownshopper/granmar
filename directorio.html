@@ -1,11 +1,9 @@
-
-<!doctype html>
+<!DOCTYPE HTML>
 <html lang="es">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#0b1f2a" />
     <title>Gran Mar | Directorio</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 
     <meta property="og:title" content="Gran Mar | Directorio" />
     <meta property="og:description" content="Negocios, servicios y contactos útiles en Gran Mar." />
@@ -17,172 +15,448 @@
     <meta name="twitter:description" content="Negocios, servicios y contactos útiles en Gran Mar." />
     <meta name="twitter:image" content="https://unknownshopper.github.io/granmar/img/insti02.jpeg" />
 
-    <link rel="manifest" href="./manifest.webmanifest" />
-    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="nuevotemplate/assets/css/main.css" />
+    <link rel="stylesheet" href="./granmar.css" />
+    <noscript><link rel="stylesheet" href="nuevotemplate/assets/css/noscript.css" /></noscript>
+
+    <style>
+      #wrapper {
+        background-image: url('./img/granmaratardecer.webp');
+      }
+
+      #intro {
+        background-image: url('./img/puestadesol2.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+
+      #header .logo {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      #header .logo img {
+        height: 36px;
+        width: auto;
+        border-radius: 10px;
+      }
+
+      #granmarApp .gm-place-grid {
+        display: grid;
+        gap: 1.25rem;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      @media screen and (max-width: 980px) {
+        #granmarApp .gm-place-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media screen and (max-width: 736px) {
+        #granmarApp .gm-place-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      #granmarApp .gm-place-grid .card:not(.place-card) {
+        border: 0;
+        background: transparent;
+        box-shadow: none;
+        padding: 0;
+      }
+    </style>
   </head>
-  <body>
-    <div class="parallax-bg" aria-hidden="true"></div>
-    <header class="topbar">
-      <div class="container">
-        <div class="brand">
-          <img class="brand__logo" src="./img/logo.png" alt="Gran Mar" />
-          <div class="brand__text">
-            <div class="brand__title">Directorio</div>
-            <div class="brand__subtitle">Servicios y negocios cercanos</div>
-          </div>
-        </div>
-        <nav class="nav">
-          <a href="./index.html">Inicio</a>
-          <a href="#directorio">Directorio</a>
-        </nav>
-      </div>
-    </header>
-
-    <main class="container">
-      <section class="hero" aria-label="Directorio">
+  <body class="is-preload">
+    <div id="wrapper" class="fade-in">
+      <div id="intro">
         <h1>Directorio</h1>
-        <div id="roomBadge" class="badge" hidden></div>
-        <p>
-          Aquí vas a encontrar negocios, servicios y contactos útiles dentro y alrededor del fraccionamiento.
-          Puedes buscar por nombre o filtrar por categoría.
-        </p>
-      </section>
+        <p>Negocios y servicios · Gran Mar</p>
+        <ul class="actions">
+          <li><a href="#header" class="button icon solid solo fa-arrow-down scrolly">Continuar</a></li>
+        </ul>
+      </div>
 
-      <section id="directorio" class="section" aria-label="Directorio">
-        <div class="section__head">
-          <h2>Negocios y servicios</h2>
-          <div class="muted">Consejo: guarda esta página en tu pantalla de inicio.</div>
-        </div>
+      <header id="header">
+        <a href="index.html" class="logo">
+          <img src="./img/logo.png" alt="Gran Mar" />
+          <span>Directorio</span>
+        </a>
+      </header>
 
-        <div class="controls">
-          <label class="control">
-            <span class="control__label">Buscar</span>
-            <input id="searchInput" type="search" placeholder="lavandería, médico, tortas, electricista…" autocomplete="off" />
-          </label>
-          <label class="control">
-            <span class="control__label">Categoría</span>
-            <select id="categorySelect">
-              <option value="">Todas</option>
-            </select>
-          </label>
-        </div>
+      <nav id="nav">
+        <ul class="links">
+          <li><a href="index.html">Inicio</a></li>
+          <li class="active"><a class="scrolly" href="#directorio">Directorio</a></li>
+        </ul>
+      </nav>
 
-        <div id="placesList" class="grid grid--cards" aria-live="polite"></div>
-      </section>
+      <div id="main">
+        <article class="post">
+          <header class="major">
+            <span class="date">Servicios</span>
+            <h2><a href="#">Directorio</a></h2>
+            <p>Negocios, servicios y emergencias dentro y alrededor del fraccionamiento.</p>
+            <div id="roomBadge" class="gm-chip" hidden></div>
+          </header>
+          <ul class="actions special">
+            <li><a href="#directorio" class="button scrolly">Ver lista</a></li>
+          </ul>
+        </article>
 
-      <footer class="footer">
-        <div class="muted">
-          Consejo: agrega esta página a tu pantalla de inicio para abrirla sin internet.
-        </div>
-        <div class="muted footer__credits">
-          <a href="https://menutags.unknownshoppers.com" target="_blank" rel="noreferrer">MENUTAGS</a>
-          by
-          <a href="https://unknownshoppers.com" target="_blank" rel="noreferrer">The Unknown Shopper</a>
-        </div>
+        <section class="post" id="granmarApp">
+          <header class="major" id="directorio">
+            <h2>Negocios y servicios</h2>
+            <p class="gm-muted">Busca por nombre o filtra por categoría.</p>
+          </header>
+
+          <div class="gm-controls">
+            <div>
+              <label for="searchInput">Buscar</label>
+              <input id="searchInput" type="search" placeholder="lavandería, médico, tortas, electricista…" autocomplete="off" />
+            </div>
+            <div>
+              <label for="categorySelect">Categoría</label>
+              <select id="categorySelect">
+                <option value="">Todas</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="placesList" class="gm-place-grid" aria-live="polite"></div>
+
+          <div style="margin-top: 2rem;" class="gm-muted">
+            Consejo: agrega esta página a tu pantalla de inicio para abrirla rápido.
+          </div>
+
+          <script>
+            window.GRANMAR_PLACES = [
+              {
+                id: 'lavanderia-1',
+                name: 'Lavandería (Ejemplo)',
+                category: 'hogar',
+                note: 'Lavado y secado. Entrega el mismo día (según disponibilidad).',
+                hours: '9:00 a 20:00',
+                whatsapp: {
+                  phone: '529991429627',
+                  message: 'Hola, estoy en Gran Mar. ¿Me compartes costos y tiempo de entrega? Gracias.',
+                },
+                lat: 18.000101,
+                lon: -92.000101,
+              },
+              {
+                id: 'medico-1',
+                name: 'Médico (Ejemplo)',
+                category: 'salud',
+                note: 'Consulta general. Llamar antes de ir.',
+                whatsapp: {
+                  phone: '529991429627',
+                  message: 'Hola, estoy en Gran Mar. ¿Tienes disponibilidad para consulta? Gracias.',
+                },
+                lat: 18.000102,
+                lon: -92.000102,
+              },
+              {
+                id: 'tortas-1',
+                name: 'Tortas (Ejemplo)',
+                category: 'alimentos',
+                note: 'Pedido para llevar / a domicilio (según zona).',
+                hours: '9:00 a 20:00',
+                whatsapp: {
+                  phone: '529991429627',
+                  message: 'Hola, estoy en Gran Mar. ¿Me compartes tu menú y tiempos de entrega? Gracias.',
+                },
+                lat: 18.000103,
+                lon: -92.000103,
+              },
+              {
+                id: 'pollos-1',
+                name: 'Pollos rostizados (Ejemplo)',
+                category: 'alimentos',
+                note: 'Para llevar / a domicilio (según zona). Pregunta por combos.',
+                hours: '10:00 a 20:00',
+                whatsapp: {
+                  phone: '529991429627',
+                  message: 'Hola, estoy en Gran Mar. ¿Me compartes menú/combos de pollos rostizados y si tienes entrega? Gracias.',
+                },
+                lat: 18.000115,
+                lon: -92.000115,
+              },
+              {
+                id: 'parrilladas-1',
+                name: 'Parrilladas (Ejemplo)',
+                category: 'alimentos',
+                note: 'Carne asada y paquetes para reunión. Confirma tiempos de preparación.',
+                hours: '11:00 a 22:00',
+                whatsapp: {
+                  phone: '529991429627',
+                  message: 'Hola, estoy en Gran Mar. ¿Me compartes tus parrilladas/paquetes y tiempos de entrega? Gracias.',
+                },
+                lat: 18.000116,
+                lon: -92.000116,
+              },
+              {
+                id: 'mariscos-1',
+                name: 'Mojarras y mariscos (Ejemplo)',
+                category: 'alimentos',
+                note: 'Mojarras fritas, cocteles y mariscos. Pregunta por disponibilidad del día.',
+                hours: '11:00 a 19:00',
+                whatsapp: {
+                  phone: '529991429627',
+                  message: 'Hola, estoy en Gran Mar. ¿Tienes mojarras y mariscos hoy? ¿Me compartes menú y horarios? Gracias.',
+                },
+                lat: 18.000117,
+                lon: -92.000117,
+              },
+              {
+                id: 'miscelanea-1',
+                name: 'Miscelánea / Tienda (Ejemplo)',
+                category: 'compras',
+                note: 'Agua, snacks, hielo, básicos.',
+                hours: '9:00 a 20:00',
+                whatsapp: {
+                  phone: '529991429627',
+                  message: 'Hola, estoy en Gran Mar. ¿Tienes abierto y vendes hielo/agua? Gracias.',
+                },
+                lat: 18.000104,
+                lon: -92.000104,
+              },
+              {
+                id: 'electricista-1',
+                name: 'Electricista (Ejemplo)',
+                category: 'mantenimiento',
+                note: 'Servicio a domicilio. Emergencias según disponibilidad.',
+                whatsapp: {
+                  phone: '529991429627',
+                  message: 'Hola, estoy en Gran Mar. ¿Puedes apoyar con un servicio eléctrico? Gracias.',
+                },
+                lat: 18.000105,
+                lon: -92.000105,
+              },
+              {
+                id: 'plomero-1',
+                name: 'Plomero (Ejemplo)',
+                category: 'mantenimiento',
+                note: 'Fugas, wc, regaderas, tinaco. Servicio a domicilio.',
+                hours: '9:00 a 20:00',
+                whatsapp: {
+                  phone: '529991429627',
+                  message: 'Hola, estoy en Gran Mar. ¿Puedes apoyar con plomería (fuga/wc/regadera)? Gracias.',
+                },
+                lat: 18.000118,
+                lon: -92.000118,
+              },
+              {
+                id: 'albanil-1',
+                name: 'Albañil (Ejemplo)',
+                category: 'mantenimiento',
+                note: 'Reparaciones menores, resanes, muros, pisos. Cotización por WhatsApp.',
+                hours: '9:00 a 18:00',
+                whatsapp: {
+                  phone: '529991429627',
+                  message: 'Hola, estoy en Gran Mar. Busco albañil para una reparación. ¿Tienes disponibilidad para cotizar? Gracias.',
+                },
+                lat: 18.000119,
+                lon: -92.000119,
+              },
+              {
+                id: 'aires-1',
+                name: 'Aires acondicionados (Ejemplo)',
+                category: 'mantenimiento',
+                note: 'Instalación, limpieza, recarga y revisión. Confirma marca/modelo.',
+                hours: '9:00 a 19:00',
+                whatsapp: {
+                  phone: '529991429627',
+                  message: 'Hola, estoy en Gran Mar. ¿Das servicio aires acondicionados (limpieza/revisión/recarga)? Gracias.',
+                },
+                lat: 18.000120,
+                lon: -92.000120,
+              },
+              {
+                id: 'albercas-1',
+                name: 'Mantenimiento de albercas (Ejemplo)',
+                category: 'mantenimiento',
+                note: 'Químicos, limpieza y revisión de bomba/filtro. Servicio programado.',
+                hours: '9:00 a 18:00',
+                whatsapp: {
+                  phone: '529991429627',
+                  message: 'Hola, estoy en Gran Mar. Busco mantenimiento de alberca. ¿Me compartes costos y disponibilidad? Gracias.',
+                },
+                lat: 18.000121,
+                lon: -92.000121,
+              },
+              {
+                id: 'servicio-domestico-1',
+                name: 'Servicio doméstico (Ejemplo)',
+                category: 'hogar',
+                note: 'Limpieza por hora o por día. Confirmar disponibilidad con anticipación.',
+                hours: '8:00 a 18:00',
+                whatsapp: {
+                  phone: '529991429627',
+                  message: 'Hola, estoy en Gran Mar. Busco servicio doméstico. ¿Tienes disponibilidad y tarifas? Gracias.',
+                },
+                lat: 18.000109,
+                lon: -92.000109,
+              },
+              {
+                id: 'mandados-1',
+                name: 'Servicio de mandados (Ejemplo)',
+                category: 'mandados',
+                note: 'Compras básicas, farmacia, recados. Indica tu casa/depa y lo que necesitas.',
+                hours: '9:00 a 20:00',
+                whatsapp: {
+                  phone: '529991429627',
+                  message: 'Hola, estoy en Gran Mar. ¿Me puedes apoyar con un mandado? Te paso lista y ubicación. Gracias.',
+                },
+                lat: 18.000110,
+                lon: -92.000110,
+              },
+              {
+                id: 'ninera-1',
+                name: 'Niñera / Cuidado de niños (Ejemplo)',
+                category: 'hogar',
+                note: 'Cuidado por hora. Indica edades, horario y si es dentro del fraccionamiento.',
+                hours: '9:00 a 21:00',
+                whatsapp: {
+                  phone: '529991429627',
+                  message: 'Hola, estoy en Gran Mar. Busco niñera/cuidado de niños. ¿Tienes disponibilidad y tarifas por hora? Gracias.',
+                },
+                lat: 18.000111,
+                lon: -92.000111,
+              },
+              {
+                id: 'masajes-1',
+                name: 'Masajes a domicilio (Ejemplo)',
+                category: 'salud',
+                note: 'Masaje relajante / descontracturante. Confirma tiempos, costo y si incluye camilla.',
+                hours: '10:00 a 20:00',
+                whatsapp: {
+                  phone: '529991429627',
+                  message: 'Hola, estoy en Gran Mar. ¿Ofreces masajes a domicilio? ¿Me compartes tipos de masaje, costos y disponibilidad? Gracias.',
+                },
+                lat: 18.000112,
+                lon: -92.000112,
+              },
+              {
+                id: 'dj-1',
+                name: 'DJ para eventos (Ejemplo)',
+                category: 'eventos',
+                note: 'Audio y música para reunión/fiesta. Indica fecha, horario y número aproximado de personas.',
+                hours: '12:00 a 23:00',
+                whatsapp: {
+                  phone: '529991429627',
+                  message: 'Hola, estoy en Gran Mar. Busco DJ para un evento. ¿Me compartes paquetes, costos y disponibilidad? Gracias.',
+                },
+                lat: 18.000113,
+                lon: -92.000113,
+              },
+              {
+                id: 'mariachis-1',
+                name: 'Mariachis (Ejemplo)',
+                category: 'eventos',
+                note: 'Serenata / evento. Indica fecha, horario, duración y ubicación (Gran Mar).',
+                hours: '12:00 a 23:00',
+                whatsapp: {
+                  phone: '529991429627',
+                  message: 'Hola, estoy en Gran Mar. Busco mariachis para un evento/serenata. ¿Me compartes costos, repertorio y disponibilidad? Gracias.',
+                },
+                lat: 18.000114,
+                lon: -92.000114,
+              },
+              {
+                id: 'bebidas-1',
+                name: 'Bebidas / Depósito (Ejemplo)',
+                category: 'bebidas',
+                note: 'Refrescos y cerveza. Pregunta por servicio a domicilio.',
+                hours: '9:00 a 20:00',
+                whatsapp: {
+                  phone: '529991429627',
+                  message: 'Hola, estoy en Gran Mar. ¿Tienes servicio a domicilio y precios? Gracias.',
+                },
+                lat: 18.000106,
+                lon: -92.000106,
+              },
+              {
+                id: 'bebidas-vip-1',
+                name: 'Bebidas preparadas VIP (Ejemplo)',
+                category: 'bebidas',
+                note: 'Bebidas alcohólicas preparadas. Pregunta por el menú y promociones.',
+                hours: '13:00 a 23:00',
+                whatsapp: {
+                  phone: '529991429627',
+                  message: 'Hola, estoy en Gran Mar. ¿Me compartes tu menú de bebidas preparadas VIP y tiempos de entrega? Gracias.',
+                },
+                lat: 18.000122,
+                lon: -92.000122,
+              },
+              {
+                id: 'alimentos-1',
+                name: 'Comida / Cocina económica (Ejemplo)',
+                category: 'alimentos',
+                note: 'Comida corrida. Pregunta el menú del día.',
+                hours: '9:00 a 20:00',
+                whatsapp: {
+                  phone: '529991429627',
+                  message: 'Hola, estoy en Gran Mar. ¿Cuál es el menú del día y horarios? Gracias.',
+                },
+                lat: 18.000107,
+                lon: -92.000107,
+              },
+              {
+                id: 'emergencia-1',
+                name: 'Emergencia / Punto de auxilio (Ejemplo)',
+                category: 'emergencia',
+                note: 'Si no hay señal, intenta moverte a un punto alto o cerca de carretera.',
+                lat: 18.000108,
+                lon: -92.000108,
+              },
+            ];
+          </script>
+        </section>
+      </div>
+
+      <footer id="footer">
+        <section class="split contact">
+          <section>
+            <h3>Créditos</h3>
+            <p>
+              <a href="https://menutags.unknownshoppers.com" target="_blank" rel="noreferrer">MENUTAGS</a>
+              by
+              <a href="https://unknownshoppers.com" target="_blank" rel="noreferrer">The Unknown Shopper</a>
+            </p>
+          </section>
+        </section>
       </footer>
-    </main>
 
-    <script>
-      window.GRANMAR_PLACES = [
-        {
-          id: 'lavanderia-1',
-          name: 'Lavandería (Ejemplo)',
-          category: 'servicios',
-          note: 'Lavado y secado. Entrega el mismo día (según disponibilidad).',
-          hours: '9:00 a 20:00',
-          whatsapp: {
-            phone: '529991429627',
-            message: 'Hola, estoy en Gran Mar. ¿Me compartes costos y tiempo de entrega? Gracias.',
-          },
-          lat: 18.000101,
-          lon: -92.000101,
-        },
-        {
-          id: 'medico-1',
-          name: 'Médico (Ejemplo)',
-          category: 'salud',
-          note: 'Consulta general. Llamar antes de ir.',
-          whatsapp: {
-            phone: '529991429627',
-            message: 'Hola, estoy en Gran Mar. ¿Tienes disponibilidad para consulta? Gracias.',
-          },
-          lat: 18.000102,
-          lon: -92.000102,
-        },
-        {
-          id: 'tortas-1',
-          name: 'Tortas (Ejemplo)',
-          category: 'alimentos',
-          note: 'Pedido para llevar / a domicilio (según zona).',
-          hours: '9:00 a 20:00',
-          whatsapp: {
-            phone: '529991429627',
-            message: 'Hola, estoy en Gran Mar. ¿Me compartes tu menú y tiempos de entrega? Gracias.',
-          },
-          lat: 18.000103,
-          lon: -92.000103,
-        },
-        {
-          id: 'miscelanea-1',
-          name: 'Miscelánea / Tienda (Ejemplo)',
-          category: 'compras',
-          note: 'Agua, snacks, hielo, básicos.',
-          hours: '9:00 a 20:00',
-          whatsapp: {
-            phone: '529991429627',
-            message: 'Hola, estoy en Gran Mar. ¿Tienes abierto y vendes hielo/agua? Gracias.',
-          },
-          lat: 18.000104,
-          lon: -92.000104,
-        },
-        {
-          id: 'electricista-1',
-          name: 'Electricista (Ejemplo)',
-          category: 'mantenimiento',
-          note: 'Servicio a domicilio. Emergencias según disponibilidad.',
-          whatsapp: {
-            phone: '529991429627',
-            message: 'Hola, estoy en Gran Mar. ¿Puedes apoyar con un servicio eléctrico? Gracias.',
-          },
-          lat: 18.000105,
-          lon: -92.000105,
-        },
-        {
-          id: 'bebidas-1',
-          name: 'Bebidas / Depósito (Ejemplo)',
-          category: 'bebidas',
-          note: 'Refrescos y cerveza. Pregunta por servicio a domicilio.',
-          hours: '9:00 a 20:00',
-          whatsapp: {
-            phone: '529991429627',
-            message: 'Hola, estoy en Gran Mar. ¿Tienes servicio a domicilio y precios? Gracias.',
-          },
-          lat: 18.000106,
-          lon: -92.000106,
-        },
-        {
-          id: 'alimentos-1',
-          name: 'Comida / Cocina económica (Ejemplo)',
-          category: 'alimentos',
-          note: 'Comida corrida. Pregunta el menú del día.',
-          hours: '9:00 a 20:00',
-          whatsapp: {
-            phone: '529991429627',
-            message: 'Hola, estoy en Gran Mar. ¿Cuál es el menú del día y horarios? Gracias.',
-          },
-          lat: 18.000107,
-          lon: -92.000107,
-        },
-        {
-          id: 'emergencia-1',
-          name: 'Emergencia / Punto de auxilio (Ejemplo)',
-          category: 'emergencia',
-          note: 'Si no hay señal, intenta moverte a un punto alto o cerca de carretera.',
-          lat: 18.000108,
-          lon: -92.000108,
-        },
-      ];
-    </script>
+      <div id="copyright">
+        <ul>
+          <li>&copy; Gran Mar</li>
+          <li>
+            <a href="https://unknownshoppers.com" target="_blank" rel="noreferrer">by The Unknown Shopper</a>
+          </li>
+        </ul>
+      </div>
+
+      <div id="placeModal" class="gm-modal" hidden aria-hidden="true" aria-label="Detalles" role="dialog">
+        <div class="gm-modal__panel" role="document">
+          <div class="gm-modal__head">
+            <div class="gm-muted">Detalles</div>
+            <button id="placeModalClose" class="gm-modal__close" type="button">Cerrar</button>
+          </div>
+          <div id="placeModalContent"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="nuevotemplate/assets/js/jquery.min.js"></script>
+    <script src="nuevotemplate/assets/js/jquery.scrollex.min.js"></script>
+    <script src="nuevotemplate/assets/js/jquery.scrolly.min.js"></script>
+    <script src="nuevotemplate/assets/js/browser.min.js"></script>
+    <script src="nuevotemplate/assets/js/breakpoints.min.js"></script>
+    <script src="nuevotemplate/assets/js/util.js"></script>
+    <script src="nuevotemplate/assets/js/main.js"></script>
     <script src="./script.js"></script>
   </body>
 </html>

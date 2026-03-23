@@ -1,11 +1,9 @@
-
-<!doctype html>
+<!DOCTYPE HTML>
 <html lang="es">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#0b1f2a" />
     <title>Gran Mar | Guía del Huésped</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 
     <meta property="og:title" content="Gran Mar | Guía del Huésped" />
     <meta property="og:description" content="Información del huésped, Wi‑Fi y lugares cercanos." />
@@ -17,188 +15,581 @@
     <meta name="twitter:description" content="Información del huésped, Wi‑Fi y lugares cercanos." />
     <meta name="twitter:image" content="https://unknownshopper.github.io/granmar/img/insti02.jpeg" />
 
-    <link rel="manifest" href="./manifest.webmanifest" />
-    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="nuevotemplate/assets/css/main.css" />
+    <link rel="stylesheet" href="./granmar.css" />
+    <noscript><link rel="stylesheet" href="nuevotemplate/assets/css/noscript.css" /></noscript>
+
+    <style>
+      #wrapper {
+        background-image: url('./img/granmaratardecer.webp');
+      }
+
+      #intro {
+        background-image: url('./img/puestadesol2.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+
+      #header .logo {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      #header .logo img {
+        height: 36px;
+        width: auto;
+        border-radius: 10px;
+      }
+
+      #nav .links li a {
+        letter-spacing: 0.08em;
+      }
+
+      #copyright a {
+        border-bottom: 0;
+      }
+
+      #granmarApp .button {
+        letter-spacing: 0.05em;
+      }
+
+      #granmarApp .gm-place-grid {
+        display: grid;
+        gap: 1.25rem;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      @media screen and (max-width: 980px) {
+        #granmarApp .gm-place-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media screen and (max-width: 736px) {
+        #granmarApp .gm-place-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      #granmarApp .gm-place-grid .card:not(.place-card) {
+        border: 0;
+        background: transparent;
+        box-shadow: none;
+        padding: 0;
+      }
+
+      .gm-parallax-band {
+        position: relative;
+        height: 240px;
+        margin: 2.75rem 0;
+        border-radius: 18px;
+        overflow: hidden;
+      }
+
+      .gm-parallax-band .parallax-bg {
+        position: absolute;
+        inset: -25% 0;
+        background-image: url('./img/paralleo.jpeg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        transform: translate3d(0, 0, 0);
+        will-change: transform;
+      }
+
+      .gm-parallax-band::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(15, 20, 26, 0.15), rgba(15, 20, 26, 0.55));
+        pointer-events: none;
+      }
+    </style>
   </head>
-  <body>
-    <div class="parallax-bg" aria-hidden="true"></div>
-    <header class="topbar">
-      <div class="container">
-        <div class="brand">
-          <img class="brand__logo" src="./img/logo.png" alt="Gran Mar" />
-          <div class="brand__text">
-            <div class="brand__title">Guía del huésped</div>
-            <div class="brand__subtitle">Playa Miramar, Centla, Tabasco</div>
-          </div>
-        </div>
-        <nav class="nav">
-          <a href="#wifi">Wi-Fi</a>
-          <a href="#clima">Clima</a>
-          <a href="#lugares">Lugares</a>
-          <a href="#emergencia">Emergencia</a>
-          <a href="#info">Info</a>
-        </nav>
+  <body class="is-preload">
+    <div id="wrapper" class="fade-in">
+      <div id="intro">
+        <h1>Gran Mar</h1>
+        <p>Guía del huésped · Playa Miramar, Centla, Tabasco</p>
+        <ul class="actions">
+          <li><a href="#header" class="button icon solid solo fa-arrow-down scrolly">Continuar</a></li>
+        </ul>
       </div>
-    </header>
 
-    <main class="container">
-      <section class="hero" aria-label="Bienvenida">
-        <h1>Bienvenido a Gran Mar</h1>
-        <div id="roomBadge" class="badge" hidden></div>
-        <p>
-          Si estás leyendo esto, estás en el WiFi del complejo o abriste el portal desde NFC.
-          Aquí tienes lo esencial para tu estancia.
-        </p>
-        <div class="grid grid--2">
-          <a class="card card--cta" href="#wifi">
-            <div class="card__title">Conectarme al Wi-Fi</div>
-            <div class="card__text">Copiar nombre y contraseña.</div>
-          </a>
-          <a class="card card--cta" href="#lugares">
-            <div class="card__title">Mapa de lugares cercanos</div>
-            <div class="card__text">Tortas, tienda, depósito, doctores y más.</div>
-          </a>
-        </div>
-      </section>
+      <header id="header">
+        <a href="index.html" class="logo">
+          <img src="./img/logo.png" alt="Gran Mar" />
+          <span>Guía del huésped</span>
+        </a>
+      </header>
 
-      <section id="wifi" class="section" aria-label="Wi-Fi">
-        <h2>Wi-Fi</h2>
-        <div class="card">
-          <div>
-            <div class="kv">
-              <div class="kv__k">Red (SSID)</div>
-              <div class="kv__v" id="wifiSsid">baja</div>
+      <nav id="nav">
+        <ul class="links">
+          <li class="active"><a class="scrolly" href="#wifi">Wi‑Fi</a></li>
+          <li><a class="scrolly" href="#clima">Clima</a></li>
+          <li><a class="scrolly" href="#lugares">Lugares</a></li>
+          <li><a class="scrolly" href="#emergencia">Emergencia</a></li>
+          <li><a class="scrolly" href="#info">Info</a></li>
+          <li><a href="directorio.html">Directorio</a></li>
+        </ul>
+        <ul class="icons">
+          <li><a href="https://unknownshoppers.com" class="icon solid fa-link" target="_blank" rel="noreferrer"><span class="label">Unknown Shopper</span></a></li>
+        </ul>
+      </nav>
+
+      <div id="main">
+        <article class="post featured">
+          <header class="major">
+            <span class="date">Bienvenido</span>
+            <h2><a href="#">Todo lo esencial<br />para tu estancia</a></h2>
+            <p>Conéctate al Wi‑Fi, revisa el clima, guarda lugares cercanos y encuentra servicios útiles.</p>
+            <div id="roomBadge" class="gm-chip" hidden></div>
+          </header>
+          <ul class="actions special">
+            <li><a href="#wifi" class="button scrolly">Conectarme al Wi‑Fi</a></li>
+            <li><a href="directorio.html" class="button">Directorio</a></li>
+          </ul>
+        </article>
+
+        <section class="gm-parallax-band" aria-hidden="true">
+          <div class="parallax-bg" aria-hidden="true"></div>
+        </section>
+
+        <section class="post" id="granmarApp">
+          <header class="major" id="wifi">
+            <h2>Wi‑Fi</h2>
+            <p class="gm-muted">Copia la contraseña y conéctate en Ajustes &gt; Wi‑Fi.</p>
+          </header>
+
+          <div class="gm-card">
+            <div class="gm-kv">
+              <div class="gm-k">Red (SSID)</div>
+              <div class="gm-v" id="wifiSsid">baja</div>
             </div>
-            <div class="kv">
-              <div class="kv__k">Contraseña</div>
-              <div class="kv__v" id="wifiPass">MelaPelas#01</div>
+            <div class="gm-kv">
+              <div class="gm-k">Contraseña</div>
+              <div class="gm-v" id="wifiPass">MelaPelas#01</div>
             </div>
-            <div class="actions">
-              <button class="btn" id="copyWifiBtn" type="button">Copiar datos Wi‑Fi</button>
-              <button class="btn btn--secondary" id="openWifiSettingsBtn" type="button">Abrir ajustes Wi‑Fi</button>
+            <div class="gm-actions">
+              <button class="button primary" id="copyWifiBtn" type="button">Copiar datos Wi‑Fi</button>
+              <button class="button" id="openWifiSettingsBtn" type="button">Abrir ajustes Wi‑Fi</button>
             </div>
-            <div class="muted" id="wifiHint">
-              Copia y pega la contraseña en tu conexión Wi‑Fi.
-            </div>
+            <div class="gm-muted" id="wifiHint">Copia y pega la contraseña en tu conexión Wi‑Fi.</div>
           </div>
-        </div>
-      </section>
 
-      <section id="info" class="section" aria-label="Información">
-        <h2>Información</h2>
-        <div class="grid grid--2">
-          <div class="card">
-            <div class="card__title">Check‑in / Check‑out</div>
-            <div class="card__text">
-              <div class="kv">
-                <div class="kv__k">Check‑in</div>
-                <div class="kv__v">15:00</div>
-              </div>
-              <div class="kv">
-                <div class="kv__k">Check‑out</div>
-                <div class="kv__v">12:00</div>
-              </div>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card__title">Reglas básicas</div>
-            <div class="card__text">
-              <div class="list">
-                <div class="list__item">Cuidar el equipo y apagar A/C al salir.</div>
-                <div class="list__item">No tirar toallas al piso con arena.</div>
-                <div class="list__item">Reporta cualquier falla por WhatsApp o llamada.</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+          <header class="major" id="clima" style="margin-top: 3rem;">
+            <h2>Clima (3 días)</h2>
+            <p class="gm-muted">Pronóstico aproximado para la zona.</p>
+          </header>
 
-      <section id="clima" class="section" aria-label="Clima">
-        <div class="section__head">
-          <h2>Clima (3 días)</h2>
-          <div class="muted">Pronóstico aproximado para la zona.</div>
-        </div>
-
-        <div class="grid grid--2">
-          <div class="card">
-            <div class="card__title">Mapa meteorológico</div>
-            <div class="card__text">Si no carga, revisa tu conexión a internet.</div>
-            <div class="embed" aria-label="Mapa meteorológico">
-              <iframe
-                id="weatherMap"
-                title="Mapa meteorológico"
-                loading="lazy"
-                referrerpolicy="no-referrer"
-                allowfullscreen
-              ></iframe>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card__title">Pronóstico</div>
-            <div id="weatherForecast" class="grid grid--cards"></div>
-            <div class="muted" id="weatherHint"></div>
-          </div>
-        </div>
-      </section>
-
-      <section id="lugares" class="section" aria-label="Lugares cercanos">
-        <div class="section__head">
-          <h2>Lugares cercanos</h2>
-          <div class="muted">Abre el mapa cuando tengas señal. Mientras tanto, guarda esta lista.</div>
-        </div>
-
-        <div class="controls">
-          <label class="control">
-            <span class="control__label">Buscar</span>
-            <input id="searchInput" type="search" placeholder="tortas, doctor, tienda…" autocomplete="off" />
-          </label>
-          <label class="control">
-            <span class="control__label">Categoría</span>
-            <select id="categorySelect">
-              <option value="">Todas</option>
-            </select>
-          </label>
-        </div>
-
-        <div id="placesList" class="grid grid--cards" aria-live="polite"></div>
-      </section>
-
-      <section id="emergencia" class="section" aria-label="Emergencia">
-        <h2>Emergencia</h2>
-        <div class="grid grid--2">
-          <div class="card">
-            <div class="card__title">Números</div>
-            <div class="card__text">
-              <div class="list">
-                <a class="list__item" href="tel:911">911 (Emergencias)</a>
-                <a class="list__item" href="tel:089">089 (Denuncia anónima)</a>
+          <div class="gm-grid gm-grid--2">
+            <div class="gm-card">
+              <h3>Mapa meteorológico</h3>
+              <p class="gm-muted">Si no carga, revisa tu conexión a internet.</p>
+              <div class="gm-embed" aria-label="Mapa meteorológico">
+                <iframe id="weatherMap" title="Mapa meteorológico" loading="lazy" referrerpolicy="no-referrer" allowfullscreen></iframe>
               </div>
             </div>
-            <div class="muted">Si no hay señal, intenta salir a un punto alto o cerca de carretera.</div>
-          </div>
-          <div class="card">
-            <div class="card__title">Ubicación</div>
-            <div class="card__text">
-              Comparte tu ubicación si necesitas ayuda. Si el mapa abre, puedes copiar la ubicación.
+            <div class="gm-card">
+              <h3>Pronóstico</h3>
+              <div id="weatherForecast" class="gm-place-grid"></div>
+              <div class="gm-muted" id="weatherHint"></div>
             </div>
-            <button class="btn" id="shareLocationBtn" type="button">Compartir mi ubicación</button>
-            <div class="muted" id="shareLocationHint"></div>
           </div>
-        </div>
-      </section>
 
-      <footer class="footer">
-        <div class="muted">
-          Consejo: agrega esta página a tu pantalla de inicio para abrirla sin internet.
-        </div>
-        <div class="muted footer__credits">
-          <a href="https://menutags.unknownshoppers.com" target="_blank" rel="noreferrer">MENUTAGS</a>
-          by
-          <a href="https://unknownshoppers.com" target="_blank" rel="noreferrer">The Unknown Shopper</a>
-        </div>
+          <header class="major" id="lugares" style="margin-top: 3rem;">
+            <h2>Directorio</h2>
+            <p class="gm-muted">Selecciona una categoría para ver negocios y servicios.</p>
+          </header>
+
+          <div class="gm-controls">
+            <div>
+              <label for="searchInput">Buscar</label>
+              <input id="searchInput" type="search" placeholder="lavandería, médico, mandados…" autocomplete="off" />
+            </div>
+          </div>
+
+          <div id="categoryButtons" class="gm-category-buttons" aria-label="Categorías"></div>
+          <div id="placesHint" class="gm-muted" style="margin-top: 0.75rem;">Elige una categoría para mostrar la lista.</div>
+
+          <div id="placesList" class="gm-place-grid" aria-live="polite" hidden></div>
+
+          <header class="major" id="emergencia" style="margin-top: 3rem;">
+            <h2>Emergencia</h2>
+            <p class="gm-muted">Si no hay señal, intenta salir a un punto alto o cerca de carretera.</p>
+          </header>
+
+          <div class="gm-grid gm-grid--2">
+            <div class="gm-card">
+              <h3>Números</h3>
+              <ul class="actions stacked">
+                <li><a class="button primary" href="tel:911">911 (Emergencias)</a></li>
+                <li><a class="button" href="tel:089">089 (Denuncia anónima)</a></li>
+              </ul>
+            </div>
+            <div class="gm-card">
+              <h3>Ubicación</h3>
+              <p class="gm-muted">Comparte tu ubicación si necesitas ayuda.</p>
+              <button class="button" id="shareLocationBtn" type="button">Compartir mi ubicación</button>
+              <div class="gm-muted" id="shareLocationHint"></div>
+            </div>
+          </div>
+
+          <header class="major" id="info" style="margin-top: 3rem;">
+            <h2>Información</h2>
+            <p class="gm-muted">Reglas y detalles básicos de la estancia.</p>
+          </header>
+
+          <div class="gm-grid gm-grid--2">
+            <div class="gm-card">
+              <h3>Check‑in / Check‑out</h3>
+              <div class="gm-kv">
+                <div class="gm-k">Check‑in</div>
+                <div class="gm-v">15:00</div>
+              </div>
+              <div class="gm-kv">
+                <div class="gm-k">Check‑out</div>
+                <div class="gm-v">12:00</div>
+              </div>
+            </div>
+            <div class="gm-card">
+              <h3>Reglas básicas</h3>
+              <p class="gm-muted">Cuidar el equipo y apagar A/C al salir. No tirar toallas al piso con arena. Reporta cualquier falla por WhatsApp o llamada.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <footer id="footer">
+        <section class="split contact">
+          <section>
+            <h3>Consejo</h3>
+            <p>Agrega esta página a tu pantalla de inicio para abrirla rápido.</p>
+          </section>
+          <section>
+            <h3>Créditos</h3>
+            <p>
+              <a href="https://menutags.unknownshoppers.com" target="_blank" rel="noreferrer">MENUTAGS</a>
+              by
+              <a href="https://unknownshoppers.com" target="_blank" rel="noreferrer">The Unknown Shopper</a>
+            </p>
+          </section>
+        </section>
       </footer>
-    </main>
 
+       <div id="copyright">
+        <ul>
+          <li>&copy; Gran Mar</li>
+          <li>
+            <a href="https://unknownshoppers.com" target="_blank" rel="noreferrer">by The Unknown Shopper</a>
+          </li>
+        </ul>
+      </div>
+
+      <div id="placeModal" class="gm-modal" hidden aria-hidden="true" aria-label="Detalles" role="dialog">
+        <div class="gm-modal__panel" role="document">
+          <div class="gm-modal__head">
+            <div class="gm-muted">Detalles</div>
+            <button id="placeModalClose" class="gm-modal__close" type="button">Cerrar</button>
+          </div>
+          <div id="placeModalContent"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      window.GRANMAR_PLACES = [
+        {
+          id: 'lavanderia-1',
+          name: 'Lavandería (Ejemplo)',
+          category: 'hogar',
+          note: 'Lavado y secado. Entrega el mismo día (según disponibilidad).',
+          hours: '9:00 a 20:00',
+          whatsapp: {
+            phone: '529991429627',
+            message: 'Hola, estoy en Gran Mar. ¿Me compartes costos y tiempo de entrega? Gracias.',
+          },
+          lat: 18.000101,
+          lon: -92.000101,
+        },
+        {
+          id: 'medico-1',
+          name: 'Médico (Ejemplo)',
+          category: 'salud',
+          note: 'Consulta general. Llamar antes de ir.',
+          whatsapp: {
+            phone: '529991429627',
+            message: 'Hola, estoy en Gran Mar. ¿Tienes disponibilidad para consulta? Gracias.',
+          },
+          lat: 18.000102,
+          lon: -92.000102,
+        },
+        {
+          id: 'tortas-1',
+          name: 'Tortas (Ejemplo)',
+          category: 'alimentos',
+          note: 'Pedido para llevar / a domicilio (según zona).',
+          hours: '9:00 a 20:00',
+          whatsapp: {
+            phone: '529991429627',
+            message: 'Hola, estoy en Gran Mar. ¿Me compartes tu menú y tiempos de entrega? Gracias.',
+          },
+          lat: 18.000103,
+          lon: -92.000103,
+        },
+        {
+          id: 'pollos-1',
+          name: 'Pollos rostizados (Ejemplo)',
+          category: 'alimentos',
+          note: 'Para llevar / a domicilio (según zona). Pregunta por combos.',
+          hours: '10:00 a 20:00',
+          whatsapp: {
+            phone: '529991429627',
+            message: 'Hola, estoy en Gran Mar. ¿Me compartes menú/combos de pollos rostizados y si tienes entrega? Gracias.',
+          },
+          lat: 18.000115,
+          lon: -92.000115,
+        },
+        {
+          id: 'parrilladas-1',
+          name: 'Parrilladas (Ejemplo)',
+          category: 'alimentos',
+          note: 'Carne asada y paquetes para reunión. Confirma tiempos de preparación.',
+          hours: '11:00 a 22:00',
+          whatsapp: {
+            phone: '529991429627',
+            message: 'Hola, estoy en Gran Mar. ¿Me compartes tus parrilladas/paquetes y tiempos de entrega? Gracias.',
+          },
+          lat: 18.000116,
+          lon: -92.000116,
+        },
+        {
+          id: 'mariscos-1',
+          name: 'Mojarras y mariscos (Ejemplo)',
+          category: 'alimentos',
+          note: 'Mojarras fritas, cocteles y mariscos. Pregunta por disponibilidad del día.',
+          hours: '11:00 a 19:00',
+          whatsapp: {
+            phone: '529991429627',
+            message: 'Hola, estoy en Gran Mar. ¿Tienes mojarras y mariscos hoy? ¿Me compartes menú y horarios? Gracias.',
+          },
+          lat: 18.000117,
+          lon: -92.000117,
+        },
+        {
+          id: 'miscelanea-1',
+          name: 'Miscelánea / Tienda (Ejemplo)',
+          category: 'compras',
+          note: 'Agua, snacks, hielo, básicos.',
+          hours: '9:00 a 20:00',
+          whatsapp: {
+            phone: '529991429627',
+            message: 'Hola, estoy en Gran Mar. ¿Tienes abierto y vendes hielo/agua? Gracias.',
+          },
+          lat: 18.000104,
+          lon: -92.000104,
+        },
+        {
+          id: 'electricista-1',
+          name: 'Electricista (Ejemplo)',
+          category: 'mantenimiento',
+          note: 'Servicio a domicilio. Emergencias según disponibilidad.',
+          whatsapp: {
+            phone: '529991429627',
+            message: 'Hola, estoy en Gran Mar. ¿Puedes apoyar con un servicio eléctrico? Gracias.',
+          },
+          lat: 18.000105,
+          lon: -92.000105,
+        },
+        {
+          id: 'plomero-1',
+          name: 'Plomero (Ejemplo)',
+          category: 'mantenimiento',
+          note: 'Fugas, wc, regaderas, tinaco. Servicio a domicilio.',
+          hours: '9:00 a 20:00',
+          whatsapp: {
+            phone: '529991429627',
+            message: 'Hola, estoy en Gran Mar. ¿Puedes apoyar con plomería (fuga/wc/regadera)? Gracias.',
+          },
+          lat: 18.000118,
+          lon: -92.000118,
+        },
+        {
+          id: 'albanil-1',
+          name: 'Albañil (Ejemplo)',
+          category: 'mantenimiento',
+          note: 'Reparaciones menores, resanes, muros, pisos. Cotización por WhatsApp.',
+          hours: '9:00 a 18:00',
+          whatsapp: {
+            phone: '529991429627',
+            message: 'Hola, estoy en Gran Mar. Busco albañil para una reparación. ¿Tienes disponibilidad para cotizar? Gracias.',
+          },
+          lat: 18.000119,
+          lon: -92.000119,
+        },
+        {
+          id: 'aires-1',
+          name: 'Aires acondicionados (Ejemplo)',
+          category: 'mantenimiento',
+          note: 'Instalación, limpieza, recarga y revisión. Confirma marca/modelo.',
+          hours: '9:00 a 19:00',
+          whatsapp: {
+            phone: '529991429627',
+            message: 'Hola, estoy en Gran Mar. ¿Das servicio aires acondicionados (limpieza/revisión/recarga)? Gracias.',
+          },
+          lat: 18.000120,
+          lon: -92.000120,
+        },
+        {
+          id: 'albercas-1',
+          name: 'Mantenimiento de albercas (Ejemplo)',
+          category: 'mantenimiento',
+          note: 'Químicos, limpieza y revisión de bomba/filtro. Servicio programado.',
+          hours: '9:00 a 18:00',
+          whatsapp: {
+            phone: '529991429627',
+            message: 'Hola, estoy en Gran Mar. Busco mantenimiento de alberca. ¿Me compartes costos y disponibilidad? Gracias.',
+          },
+          lat: 18.000121,
+          lon: -92.000121,
+        },
+        {
+          id: 'servicio-domestico-1',
+          name: 'Servicio doméstico (Ejemplo)',
+          category: 'hogar',
+          note: 'Limpieza por hora o por día. Confirmar disponibilidad con anticipación.',
+          hours: '8:00 a 18:00',
+          whatsapp: {
+            phone: '529991429627',
+            message: 'Hola, estoy en Gran Mar. Busco servicio doméstico. ¿Tienes disponibilidad y tarifas? Gracias.',
+          },
+          lat: 18.000109,
+          lon: -92.000109,
+        },
+        {
+          id: 'mandados-1',
+          name: 'Servicio de mandados (Ejemplo)',
+          category: 'mandados',
+          note: 'Compras básicas, farmacia, recados. Indica tu casa/depa y lo que necesitas.',
+          hours: '9:00 a 20:00',
+          whatsapp: {
+            phone: '529991429627',
+            message: 'Hola, estoy en Gran Mar. ¿Me puedes apoyar con un mandado? Te paso lista y ubicación. Gracias.',
+          },
+          lat: 18.000110,
+          lon: -92.000110,
+        },
+        {
+          id: 'ninera-1',
+          name: 'Niñera / Cuidado de niños (Ejemplo)',
+          category: 'hogar',
+          note: 'Cuidado por hora. Indica edades, horario y si es dentro del fraccionamiento.',
+          hours: '9:00 a 21:00',
+          whatsapp: {
+            phone: '529991429627',
+            message: 'Hola, estoy en Gran Mar. Busco niñera/cuidado de niños. ¿Tienes disponibilidad y tarifas por hora? Gracias.',
+          },
+          lat: 18.000111,
+          lon: -92.000111,
+        },
+        {
+          id: 'masajes-1',
+          name: 'Masajes a domicilio (Ejemplo)',
+          category: 'salud',
+          note: 'Masaje relajante / descontracturante. Confirma tiempos, costo y si incluye camilla.',
+          hours: '10:00 a 20:00',
+          whatsapp: {
+            phone: '529991429627',
+            message: 'Hola, estoy en Gran Mar. ¿Ofreces masajes a domicilio? ¿Me compartes tipos de masaje, costos y disponibilidad? Gracias.',
+          },
+          lat: 18.000112,
+          lon: -92.000112,
+        },
+        {
+          id: 'dj-1',
+          name: 'DJ para eventos (Ejemplo)',
+          category: 'eventos',
+          note: 'Audio y música para reunión/fiesta. Indica fecha, horario y número aproximado de personas.',
+          hours: '12:00 a 23:00',
+          whatsapp: {
+            phone: '529991429627',
+            message: 'Hola, estoy en Gran Mar. Busco DJ para un evento. ¿Me compartes paquetes, costos y disponibilidad? Gracias.',
+          },
+          lat: 18.000113,
+          lon: -92.000113,
+        },
+        {
+          id: 'mariachis-1',
+          name: 'Mariachis (Ejemplo)',
+          category: 'eventos',
+          note: 'Serenata / evento. Indica fecha, horario, duración y ubicación (Gran Mar).',
+          hours: '12:00 a 23:00',
+          whatsapp: {
+            phone: '529991429627',
+            message: 'Hola, estoy en Gran Mar. Busco mariachis para un evento/serenata. ¿Me compartes costos, repertorio y disponibilidad? Gracias.',
+          },
+          lat: 18.000114,
+          lon: -92.000114,
+        },
+        {
+          id: 'bebidas-1',
+          name: 'Bebidas / Depósito (Ejemplo)',
+          category: 'bebidas',
+          note: 'Refrescos y cerveza. Pregunta por servicio a domicilio.',
+          hours: '9:00 a 20:00',
+          whatsapp: {
+            phone: '529991429627',
+            message: 'Hola, estoy en Gran Mar. ¿Tienes servicio a domicilio y precios? Gracias.',
+          },
+          lat: 18.000106,
+          lon: -92.000106,
+        },
+        {
+          id: 'bebidas-vip-1',
+          name: 'Bebidas preparadas VIP (Ejemplo)',
+          category: 'bebidas',
+          note: 'Bebidas alcohólicas preparadas. Pregunta por el menú y promociones.',
+          hours: '13:00 a 23:00',
+          whatsapp: {
+            phone: '529991429627',
+            message: 'Hola, estoy en Gran Mar. ¿Me compartes tu menú de bebidas preparadas VIP y tiempos de entrega? Gracias.',
+          },
+          lat: 18.000122,
+          lon: -92.000122,
+        },
+        {
+          id: 'alimentos-1',
+          name: 'Comida / Cocina económica (Ejemplo)',
+          category: 'alimentos',
+          note: 'Comida corrida. Pregunta el menú del día.',
+          hours: '9:00 a 20:00',
+          whatsapp: {
+            phone: '529991429627',
+            message: 'Hola, estoy en Gran Mar. ¿Cuál es el menú del día y horarios? Gracias.',
+          },
+          lat: 18.000107,
+          lon: -92.000107,
+        },
+        {
+          id: 'emergencia-1',
+          name: 'Emergencia / Punto de auxilio (Ejemplo)',
+          category: 'emergencia',
+          note: 'Si no hay señal, intenta moverte a un punto alto o cerca de carretera.',
+          lat: 18.000108,
+          lon: -92.000108,
+        },
+      ];
+    </script>
+
+    <script src="nuevotemplate/assets/js/jquery.min.js"></script>
+    <script src="nuevotemplate/assets/js/jquery.scrollex.min.js"></script>
+    <script src="nuevotemplate/assets/js/jquery.scrolly.min.js"></script>
+    <script src="nuevotemplate/assets/js/browser.min.js"></script>
+    <script src="nuevotemplate/assets/js/breakpoints.min.js"></script>
+    <script src="nuevotemplate/assets/js/util.js"></script>
+    <script src="nuevotemplate/assets/js/main.js"></script>
     <script src="./script.js"></script>
   </body>
 </html>
